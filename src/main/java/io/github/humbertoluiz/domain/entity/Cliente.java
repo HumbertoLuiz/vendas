@@ -42,10 +42,16 @@ public class Cliente implements Serializable {
 	@OneToMany( mappedBy = "cliente", fetch = FetchType.LAZY  )
 	private Set<Pedido> pedidos;
 
+	
+	@OneToMany( mappedBy = "cliente", fetch = FetchType.LAZY  )
+	private Set<Endereco> enderecos;
+
 	@Builder
 	public Cliente(String nome, String cpf) {
 		this.nome = nome;
 		this.cpf = cpf;
 	}
+	
+
 	
 }

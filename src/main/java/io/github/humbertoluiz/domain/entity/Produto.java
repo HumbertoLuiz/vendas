@@ -33,12 +33,12 @@ public class Produto implements Serializable {
 	@Column(nullable = false)
 	private String descricao;
 	
-	private BigDecimal precoUnitario;
+	private BigDecimal preco;
 
 	@Builder
-	public Produto(@NotBlank String descricao, BigDecimal precoUnitario) {
+	public Produto(String descricao, BigDecimal preco) {
 		this.descricao = descricao;
-		this.precoUnitario = precoUnitario;
+		this.preco = preco;
 	}
 	
 }

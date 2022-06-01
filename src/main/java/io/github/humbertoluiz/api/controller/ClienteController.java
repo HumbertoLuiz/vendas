@@ -40,16 +40,18 @@ public class ClienteController {
 
 	@DeleteMapping("/{clienteId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public Cliente delete(@PathVariable Long clienteId) {
-		return clienteRepository
+	public void delete( @PathVariable Long clienteId ) {
+		clienteRepository
 		.findById(clienteId)
-		.map(cliente -> clienteRepository.save(cliente))
-		.orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
+		.map( cliente -> {
+			clienteRepository.delete(cliente);
+			return Void.TYPE;
+		}).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
 	}
 
 	@PutMapping("/{clienteId}")
-	public Cliente update(@RequestBody Cliente cliente, @PathVariable Long clienteId) {
-		return clienteRepository.findById(clienteId)
+	public void update(@RequestBody Cliente cliente, @PathVariable Long clienteId) {
+		clienteRepository.findById(clienteId)
 			.map(clienteExistente -> {
 			cliente.setId(clienteExistente.getId());
 			clienteRepository.save(cliente);
