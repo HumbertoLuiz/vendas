@@ -2,15 +2,19 @@ package io.github.humbertoluiz.domain.entity;
 
 import java.io.Serializable;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -42,9 +46,8 @@ public class Cliente implements Serializable {
 	@OneToMany( mappedBy = "cliente", fetch = FetchType.LAZY  )
 	private Set<Pedido> pedidos;
 
-	
-	@OneToMany( mappedBy = "cliente", fetch = FetchType.LAZY  )
-	private Set<Endereco> enderecos;
+	@ManyToOne
+	private Endereco endereco;
 
 	@Builder
 	public Cliente(String nome, String cpf) {

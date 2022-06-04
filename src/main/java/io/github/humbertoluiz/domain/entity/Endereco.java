@@ -2,8 +2,6 @@ package io.github.humbertoluiz.domain.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -31,7 +29,6 @@ public class Endereco {
 	@Id
 	private String cep;
 	private String logradouro;
-	private Integer numero;
 	private String complemento;
 	private String bairro;
 	private String localidade;
@@ -41,16 +38,12 @@ public class Endereco {
 	private String ddd;
 	private String siafi;	
 	
-	@ManyToOne
-	@JoinColumn(name = "Cliente_id")
-	private Cliente cliente;
 
 	@Builder
-	public Endereco(String cep, String logradouro, Integer numero, String complemento, String bairro, String localidade,
-			String uf, String ibge, String gia, String ddd, String siafi, Cliente cliente) {
+	public Endereco(String cep, String logradouro, String complemento, String bairro, String localidade,
+			String uf, String ibge, String gia, String ddd, String siafi) {
 		this.cep = cep;
 		this.logradouro = logradouro;
-		this.numero = numero;
 		this.complemento = complemento;
 		this.bairro = bairro;
 		this.localidade = localidade;
@@ -59,7 +52,6 @@ public class Endereco {
 		this.gia = gia;
 		this.ddd = ddd;
 		this.siafi = siafi;
-		this.cliente = cliente;
 	}
 
 }

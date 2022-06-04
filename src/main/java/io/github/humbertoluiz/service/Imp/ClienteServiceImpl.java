@@ -1,11 +1,11 @@
 package io.github.humbertoluiz.service.Imp;
 
 import java.util.Optional;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.server.ResponseStatusException;
 import io.github.humbertoluiz.domain.entity.Cliente;
 import io.github.humbertoluiz.domain.entity.Endereco;
 import io.github.humbertoluiz.domain.repository.ClienteRepository;
@@ -36,52 +36,67 @@ public class ClienteServiceImpl implements ClienteService {
 	// Strategy: Implementar os métodos definidos na interface.
 	// Facade: Abstrair integrações com subsistemas, provendo uma interface simples.
 
-	@Override
-	public Iterable<Cliente> buscarTodos() {
-		// Buscar todos os Clientes.
-		return clienteRepository.findAll();
-	}
+//	@Override
+//	public Iterable<Cliente> buscarTodos() {
+//		return clienteRepository.findAll();
+//	}
 
 	@Override
-	public Cliente buscarPorId(Long id) {
+	public Cliente buscarPorId(Long clienteId) {
 		// Buscar Cliente por ID.
-		Optional<Cliente> cliente = clienteRepository.findById(id);
+		Optional<Cliente> cliente = Optional.ofNullable(clienteRepository.findById(clienteId)
+			.orElseThrow(() ->
+			new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado")));
 		return cliente.get();
 	}
 
 	@Override
-	public void inserir(Cliente cliente) {
-		salvarClienteComCep(cliente);
+	public Cliente save(Cliente cliente) {
+		return salvarClienteComCep(cliente);
 	}
 
 	@Override
-	public void atualizar(Long id, Cliente cliente) {
+	public void update(Long clienteId, Cliente cliente) {
 		// Buscar Cliente por ID, caso exista:
-		Optional<Cliente> clienteBd = clienteRepository.findById(id);
-		if (clienteBd.isPresent()) {
-			salvarClienteComCep(cliente);
-		}
+		clienteRepository.findById(clienteId)
+		.map(clienteExistente -> {
+		cliente.setId(clienteExistente.getId());
+		salvarClienteComCep(cliente);
+		return clienteExistente;
+		}).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
 	}
 
 	@Override
-	public void deletar(Long id) {
+	public void delete(Long clienteId) {
 		// Deletar Cliente por ID.
-		clienteRepository.deleteById(id);
+		clienteRepository
+		.findById(clienteId)
+		.map( cliente -> {
+			clienteRepository.delete(cliente);
+			return Void.TYPE;
+		}).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
 	}
 
-	private void salvarClienteComCep(Cliente cliente) {
+	private Cliente salvarClienteComCep(Cliente cliente) {
 		
 		// Verificar se o Endereco do Cliente já existe (pelo CEP).
-		String cep = ((Endereco) cliente.getEnderecos()).getCep();
+		String cep = ((Endereco) cliente.getEndereco()).getCep();
 		Endereco endereco = enderecoRepository.findById(cep).orElseGet(() -> {
 			// Caso não exista, integrar com o ViaCEP e persistir o retorno.
 			Endereco novoEndereco = viaCepService.consultarCep(cep);
 			enderecoRepository.save(novoEndereco);
 			return novoEndereco;
 		});
-		cliente.setEnderecos((Set<Endereco>) endereco);
+		cliente.setEndereco(endereco);
 		// Inserir Cliente, vinculando o Endereco (novo ou existente).
 		clienteRepository.save(cliente);
+		return cliente;
+	}
+
+	@Override
+	public Example<Cliente> buscarPorFiltro(Example<Cliente> example) {
+		clienteRepository.findAll();
+		return null;
 	}
 
 }

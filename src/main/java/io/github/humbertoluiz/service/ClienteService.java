@@ -1,5 +1,7 @@
 package io.github.humbertoluiz.service;
 
+import org.springframework.data.domain.Example;
+
 import io.github.humbertoluiz.domain.entity.Cliente;
 
 /**
@@ -13,14 +15,18 @@ import io.github.humbertoluiz.domain.entity.Cliente;
 
 public interface ClienteService {
 
-	Iterable<Cliente> buscarTodos();
+//	Iterable<Cliente> buscarTodos();
+	
+	Cliente buscarPorId(Long clienteId);
 
-	Cliente buscarPorId(Long id);
+	Cliente save(Cliente cliente);
 
-	void inserir(Cliente cliente);
+	void update(Long clienteId, Cliente cliente);
 
-	void atualizar(Long id, Cliente cliente);
+	void delete(Long clienteId);
 
-	void deletar(Long id);
+	Example<Cliente> buscarPorFiltro(Example<Cliente> example);
+
+
 
 }
