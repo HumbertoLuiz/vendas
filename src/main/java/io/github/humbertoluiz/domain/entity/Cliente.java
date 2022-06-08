@@ -2,10 +2,6 @@ package io.github.humbertoluiz.domain.entity;
 
 import java.io.Serializable;
 import java.util.Set;
-<<<<<<< HEAD
-=======
-
->>>>>>> 5ae35af1d740607db2bc7c21cc0d6a506a6f2920
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -49,13 +45,8 @@ public class Cliente implements Serializable {
 	@OneToMany( mappedBy = "cliente", fetch = FetchType.LAZY  )
 	private Set<Pedido> pedidos;
 
-<<<<<<< HEAD
 //	@ManyToOne
 //	private Endereco endereco;
-=======
-	@ManyToOne
-	private Endereco endereco;
->>>>>>> 5ae35af1d740607db2bc7c21cc0d6a506a6f2920
 
 	@Builder
 	public Cliente(String nome, String cpf) {

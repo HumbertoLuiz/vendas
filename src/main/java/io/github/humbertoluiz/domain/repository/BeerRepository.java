@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 //package io.github.humbertoluiz.domain.repository;
 //
 //import java.util.Optional;
@@ -12,18 +11,3 @@
 //public interface BeerRepository extends JpaRepository<Beer, Long> {
 //    Optional<Beer> findByName(String name);
 //}
-=======
-package io.github.humbertoluiz.domain.repository;
-
-import java.util.Optional;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-import io.github.humbertoluiz.domain.entity.Beer;
-
-@Repository
-public interface BeerRepository extends JpaRepository<Beer, Long> {
-    Optional<Beer> findByName(String name);
-}
->>>>>>> 5ae35af1d740607db2bc7c21cc0d6a506a6f2920

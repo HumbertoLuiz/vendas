@@ -20,11 +20,7 @@ import io.github.humbertoluiz.domain.entity.Produto;
 import io.github.humbertoluiz.domain.repository.ProdutoRepository;
 
 @RestController
-<<<<<<< HEAD
 @RequestMapping("/api/v1/produtos")
-=======
-@RequestMapping("/v1/produtos")
->>>>>>> 5ae35af1d740607db2bc7c21cc0d6a506a6f2920
 public class ProdutoController {
 
 	@Autowired
