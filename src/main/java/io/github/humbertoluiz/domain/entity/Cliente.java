@@ -2,15 +2,18 @@ package io.github.humbertoluiz.domain.entity;
 
 import java.io.Serializable;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.br.CPF;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -33,11 +36,12 @@ public class Cliente implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotBlank
-	@Column(nullable = false)
+	@NotBlank(message = "{campo.nome.obrigatorio}")
+	@Column(nullable = false, length = 100)
 	private String nome;
 	
-	@NotBlank
+	@NotBlank(message = "{campo.cpf.obrigatorio}")
+	@CPF(message = "{campo.cpf.invalido}")
 	@Column(nullable = false, length = 11)
 	private String cpf;
 	

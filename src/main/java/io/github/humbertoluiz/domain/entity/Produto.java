@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
 import lombok.Data;
@@ -29,10 +30,12 @@ public class Produto implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotBlank
+	@NotBlank(message = "{campo.descricao.obrigatorio}")
 	@Column(nullable = false)
 	private String descricao;
 	
+	@NotNull(message = "{campo.preco.obrigatorio}")
+	@Column(nullable = false)
 	private BigDecimal preco;
 
 	@Builder

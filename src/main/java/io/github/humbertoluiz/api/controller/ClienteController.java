@@ -1,5 +1,7 @@
 package io.github.humbertoluiz.api.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
 import io.github.humbertoluiz.domain.entity.Cliente;
 import io.github.humbertoluiz.service.ClienteService;
 
@@ -30,7 +33,7 @@ public class ClienteController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Cliente save(@RequestBody Cliente cliente) {
+	public Cliente save( @RequestBody @Valid Cliente cliente ) {
 		return clienteService.save(cliente);
 	}
 
@@ -41,7 +44,7 @@ public class ClienteController {
 	}
 
 	@PutMapping("/{clienteId}")
-	public void update(@RequestBody Cliente cliente, @PathVariable Long clienteId) {
+	public void update(@RequestBody @Valid Cliente cliente, @PathVariable Long clienteId) {
 		clienteService.update(clienteId, cliente);
 	}
 

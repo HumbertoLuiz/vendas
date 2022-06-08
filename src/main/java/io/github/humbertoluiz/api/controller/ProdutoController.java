@@ -2,6 +2,8 @@ package io.github.humbertoluiz.api.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+
 import io.github.humbertoluiz.domain.entity.Produto;
 import io.github.humbertoluiz.domain.repository.ProdutoRepository;
 
@@ -35,12 +38,12 @@ public class ProdutoController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Produto save( @RequestBody Produto produto ) {
+	public Produto save( @RequestBody @Valid Produto produto ) {
 		return produtoRepository.save(produto);
 	}
 	
 	@PutMapping("/{produtoId}")
-	public void update(@RequestBody Produto produto, @PathVariable Long produtoId) {
+	public void update(@RequestBody @Valid Produto produto, @PathVariable Long produtoId) {
 		produtoRepository.findById(produtoId)
 			.map(produtoExistente -> {
 			produto.setId(produtoExistente.getId());
