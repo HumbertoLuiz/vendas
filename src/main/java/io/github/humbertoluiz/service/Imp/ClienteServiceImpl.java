@@ -7,11 +7,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import io.github.humbertoluiz.domain.entity.Cliente;
+<<<<<<< HEAD
 //import io.github.humbertoluiz.domain.entity.Endereco;
 import io.github.humbertoluiz.domain.repository.ClienteRepository;
 //import io.github.humbertoluiz.domain.repository.EnderecoRepository;
 import io.github.humbertoluiz.service.ClienteService;
 //import io.github.humbertoluiz.service.ViaCepService;
+=======
+import io.github.humbertoluiz.domain.entity.Endereco;
+import io.github.humbertoluiz.domain.repository.ClienteRepository;
+import io.github.humbertoluiz.domain.repository.EnderecoRepository;
+import io.github.humbertoluiz.service.ClienteService;
+import io.github.humbertoluiz.service.ViaCepService;
+>>>>>>> 5ae35af1d740607db2bc7c21cc0d6a506a6f2920
 
 /**
  * Implementação da <b>Strategy</b> {@link ClienteService}, a qual pode ser
@@ -28,10 +36,17 @@ public class ClienteServiceImpl implements ClienteService {
 	// Singleton: Injetar os componentes do Spring com @Autowired.
 	@Autowired
 	private ClienteRepository clienteRepository;
+<<<<<<< HEAD
 //	@Autowired
 //	private EnderecoRepository enderecoRepository;
 //	@Autowired
 //	private ViaCepService viaCepService;
+=======
+	@Autowired
+	private EnderecoRepository enderecoRepository;
+	@Autowired
+	private ViaCepService viaCepService;
+>>>>>>> 5ae35af1d740607db2bc7c21cc0d6a506a6f2920
 	
 	// Strategy: Implementar os métodos definidos na interface.
 	// Facade: Abstrair integrações com subsistemas, provendo uma interface simples.
@@ -80,6 +95,7 @@ public class ClienteServiceImpl implements ClienteService {
 	private Cliente salvarClienteComCep(Cliente cliente) {
 		
 		// Verificar se o Endereco do Cliente já existe (pelo CEP).
+<<<<<<< HEAD
 		//String cep = ((Endereco) cliente.getEndereco()).getCep();
 		//Endereco endereco = enderecoRepository.findById(cep).orElseGet(() -> {
 			// Caso não exista, integrar com o ViaCEP e persistir o retorno.
@@ -88,6 +104,16 @@ public class ClienteServiceImpl implements ClienteService {
 			//return novoEndereco;
 		//});
 		//cliente.setEndereco(endereco);
+=======
+		String cep = ((Endereco) cliente.getEndereco()).getCep();
+		Endereco endereco = enderecoRepository.findById(cep).orElseGet(() -> {
+			// Caso não exista, integrar com o ViaCEP e persistir o retorno.
+			Endereco novoEndereco = viaCepService.consultarCep(cep);
+			enderecoRepository.save(novoEndereco);
+			return novoEndereco;
+		});
+		cliente.setEndereco(endereco);
+>>>>>>> 5ae35af1d740607db2bc7c21cc0d6a506a6f2920
 		// Inserir Cliente, vinculando o Endereco (novo ou existente).
 		clienteRepository.save(cliente);
 		return cliente;
