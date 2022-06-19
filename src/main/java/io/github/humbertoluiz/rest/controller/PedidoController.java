@@ -1,4 +1,4 @@
-package io.github.humbertoluiz.api.controller;
+package io.github.humbertoluiz.rest.controller;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;

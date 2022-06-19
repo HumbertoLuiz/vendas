@@ -1,3 +1,4 @@
+package io.github.humbertoluiz.rest.controller;
 //package io.github.humbertoluiz.api.controller;
 //
 //import org.springframework.web.bind.annotation.GetMapping;

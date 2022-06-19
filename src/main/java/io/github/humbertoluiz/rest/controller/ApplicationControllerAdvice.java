@@ -1,4 +1,4 @@
-package io.github.humbertoluiz.api.controller;
+package io.github.humbertoluiz.rest.controller;
 
 import java.util.List;
 import java.util.stream.Collectors;
