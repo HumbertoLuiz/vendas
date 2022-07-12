@@ -15,7 +15,7 @@ import io.github.humbertoluiz.domain.entity.Cliente;
 
 public interface ClienteService {
 
-//	Iterable<Cliente> buscarTodos();
+	Iterable<Cliente> buscarTodos();
 	
 	Cliente buscarPorId(Long clienteId);
 

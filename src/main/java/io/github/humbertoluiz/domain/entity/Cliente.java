@@ -9,9 +9,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.br.CPF;
 
@@ -49,8 +49,8 @@ public class Cliente implements Serializable {
 	@OneToMany( mappedBy = "cliente", fetch = FetchType.LAZY  )
 	private Set<Pedido> pedidos;
 
-//	@ManyToOne
-//	private Endereco endereco;
+	@ManyToOne
+	private Endereco endereco;
 
 	@Builder
 	public Cliente(String nome, String cpf) {

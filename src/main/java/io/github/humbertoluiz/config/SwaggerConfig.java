@@ -7,11 +7,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.ApiKey;
+import springfox.documentation.service.AuthorizationScope;
 import springfox.documentation.service.Contact;
+import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import static springfox.documentation.builders.RequestHandlerSelectors.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebMvc
@@ -28,11 +36,14 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
+        		.useDefaultResponseMessages(false)
                 .select()
                 .apis(basePackage(BASE_PACKAGE))
                 .paths(PathSelectors.any())
                 .paths(PathSelectors.regex("/.*"))
                 .build()
+                .securityContexts(Arrays.asList(securityContext()))
+                .securitySchemes(Arrays.asList(apiKey()))
                 .apiInfo(buildApiInfo());
     }
 
@@ -46,4 +57,27 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
                 .contact(new Contact(CONTACT_NAME, CONTACT_GITHUB, CONTACT_EMAIL))
                 .build();
     }
+    
+	public ApiKey apiKey() {
+		return new ApiKey("JWT", "Authorization", "header");
+	}
+
+	private SecurityContext securityContext() {
+		return SecurityContext
+				.builder()
+				.securityReferences(defaultAuth())
+				.operationSelector(operationContext -> true)
+				.build();
+	}
+	
+	private List<SecurityReference> defaultAuth() {
+		AuthorizationScope authorizationScope = new AuthorizationScope(
+				"global", "accessEverything");
+		AuthorizationScope[] scopes = new AuthorizationScope[1];
+		scopes[0] = authorizationScope;
+		SecurityReference reference = new SecurityReference("JWT", scopes);
+				List<SecurityReference> auths = new ArrayList<>();
+				auths.add(reference);
+		return auths;
+	}
 }
