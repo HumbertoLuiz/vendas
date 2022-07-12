@@ -1,16 +1,21 @@
 package io.github.humbertoluiz.service.Impl;
 
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
 import io.github.humbertoluiz.domain.entity.Cliente;
+import io.github.humbertoluiz.domain.entity.Endereco;
 //import io.github.humbertoluiz.domain.entity.Endereco;
 import io.github.humbertoluiz.domain.repository.ClienteRepository;
+import io.github.humbertoluiz.domain.repository.EnderecoRepository;
 //import io.github.humbertoluiz.domain.repository.EnderecoRepository;
 import io.github.humbertoluiz.service.ClienteService;
+import io.github.humbertoluiz.service.ViaCepService;
 //import io.github.humbertoluiz.service.ViaCepService;
 
 /**
@@ -28,18 +33,18 @@ public class ClienteServiceImpl implements ClienteService {
 	// Singleton: Injetar os componentes do Spring com @Autowired.
 	@Autowired
 	private ClienteRepository clienteRepository;
-//	@Autowired
-//	private EnderecoRepository enderecoRepository;
-//	@Autowired
-//	private ViaCepService viaCepService;
+	@Autowired
+	private EnderecoRepository enderecoRepository;
+	@Autowired
+	private ViaCepService viaCepService;
 	
 	// Strategy: Implementar os métodos definidos na interface.
 	// Facade: Abstrair integrações com subsistemas, provendo uma interface simples.
 
-//	@Override
-//	public Iterable<Cliente> buscarTodos() {
-//		return clienteRepository.findAll();
-//	}
+	@Override
+	public Iterable<Cliente> buscarTodos() {
+		return clienteRepository.findAll();
+	}
 
 	@Override
 	public Cliente buscarPorId(Long clienteId) {
@@ -80,14 +85,14 @@ public class ClienteServiceImpl implements ClienteService {
 	private Cliente salvarClienteComCep(Cliente cliente) {
 		
 		// Verificar se o Endereco do Cliente já existe (pelo CEP).
-		//String cep = ((Endereco) cliente.getEndereco()).getCep();
-		//Endereco endereco = enderecoRepository.findById(cep).orElseGet(() -> {
+		String cep = ((Endereco) cliente.getEndereco()).getCep();
+		Endereco endereco = enderecoRepository.findById(cep).orElseGet(() -> {
 			// Caso não exista, integrar com o ViaCEP e persistir o retorno.
-			//Endereco novoEndereco = viaCepService.consultarCep(cep);
-			//enderecoRepository.save(novoEndereco);
-			//return novoEndereco;
-		//});
-		//cliente.setEndereco(endereco);
+			Endereco novoEndereco = viaCepService.consultarCep(cep);
+			enderecoRepository.save(novoEndereco);
+			return novoEndereco;
+		});
+		cliente.setEndereco(endereco);
 		// Inserir Cliente, vinculando o Endereco (novo ou existente).
 		clienteRepository.save(cliente);
 		return cliente;

@@ -48,7 +48,7 @@ public class ClienteController {
 		clienteService.update(clienteId, cliente);
 	}
 
-	@GetMapping
+	@GetMapping("/filtro")
 	public Example<Cliente> buscarPorFiltro(Cliente filtro) {
 		ExampleMatcher matcher = ExampleMatcher
 				.matching()
@@ -58,9 +58,9 @@ public class ClienteController {
 		return clienteService.buscarPorFiltro(example);
 	}
 	
-//	@GetMapping
-//	public Iterable<Cliente> buscarTodos() {
-//		return clienteService.buscarTodos();
-//	}
+	@GetMapping("/todos")
+	public Iterable<Cliente> buscarTodos() {
+		return clienteService.buscarTodos();
+	}
 
 }
